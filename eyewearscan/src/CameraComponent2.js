@@ -30,11 +30,11 @@ function CameraComponent2() {
 
     // Send FormData to Flask server API
     console.log( "chlaa", formData )
-    // const response=await fetch( "/api/scan", {
-    //   method: "POST",
-    //   body: formData,
-    // } );
-    // const result=await response.json();
+    const response=await fetch( 'http://127.0.0.1:5000/measurement', {
+      method: "POST",
+      body: formData,
+    } );
+    const result=await response.json();
 
     // Do something with the result
   };
