@@ -51,7 +51,7 @@ function CameraComponent2() {
   const handleCancel=() => {
     setIsModalOpen( false );
   };
-  const sendImages=() => {
+  const sendImages= async () => {
     const formData=new FormData();
     for ( let i=0; i<imagesFront.length; i++ ) {
       formData.append( `front_image_${i}`, dataURLtoBlob( imagesFront[ i ] ) );
@@ -61,11 +61,12 @@ function CameraComponent2() {
     }
     console.log( "chlaa Front", formData )
     // Send FormData to Flask server API
-    // const response=await fetch( "/api/scan", {
-    //   method: "POST",
-    //   body: formData,
-    // } );
-    // const result=await response.json();
+    const response=await fetch( "http://127.0.0.1:5000/measurement", {
+      method: "POST",
+      body: formData,
+    } );
+    const result=await response.json();
+    console.log('RESULT:', result);
   }
 
   const handleScan=async () => {

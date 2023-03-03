@@ -8,6 +8,7 @@ import io
 import numpy as np
 import mediapipe as mp
 import cv2
+import math
 from mediapipe.framework.formats import landmark_pb2
 
 mp_drawing = mp.solutions.drawing_utils
@@ -54,6 +55,8 @@ def measurement():
             image_dist_3 = mp_drawing.math.dist((l[34].x*int(h),l[34].y*int(w)),(l[264].x*int(h),l[264].y*int(w)))
             image_dist_4 = mp_drawing.math.dist((l[473].x*int(h),l[473].y*int(w)),(l[468].x*int(h),l[468].y*int(w)))
             image_dist_5 = mp_drawing.math.dist((l[193].x*int(h),l[193].y*int(w)),(l[413].x*int(h),l[413].y*int(w)))
+            image_dist_6 = mp_drawing.math.dist((l[168].x*int(h),l[168].y*int(w)),(l[4].x*int(h),l[4].y*int(w)))
+            image_dist_7 = mp_drawing.math.dist((l[102].x*int(h),l[102].y*int(w)),(l[4].x*int(h),l[4].y*int(w)))
             real_dist = 1.1
             otpr = real_dist/image_dist
             i = otpr*image_dist_2
@@ -68,6 +71,12 @@ def measurement():
             nw = otpr*image_dist_5
             if max_nw<nw:
                 max_nw=nw
+            nl = otpr*image_dist_6
+            if max_nl<nl:
+                max_nl=nl
+            ne = otpr*image_dist_7
+            if max_ne<ne:
+                max_ne=ne
 
         
     print(max_eye,max_fw,
@@ -75,9 +84,15 @@ def measurement():
     max_nw,
     max_nl,
     max_ne)
-        
+    div = max_ne/max_nl
+    angle = math.sinh(div)
+    angle = math.degrees(angle)+3
+    print(angle)
     print("////////////////////////////")
-    return{"Hi"}
+    return({"max_eye":max_eye,"max_fw":max_fw,
+    "max_pd":max_pd,
+    "max_nw":max_nw,
+    "angle":angle})
 
 
 
