@@ -1,7 +1,62 @@
 body {
-  /* background-image: url(./bg.png); */
+  background-image: url(./background_img.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   overflow-x: hidden;
   background-color: rgba(0, 0, 0, 0.879);
+}
+.custom-carousel .slick-dots li button {
+  background-color: black;
+  margin-top: 3rem;
+}
+
+.custom-carousel .slick-dots li.slick-active button {
+  background-color: black;
+  color: white;
+}
+
+.ant-modal-mask {
+  background-color: rgba(0, 0, 0, .8) !important;
+}
+
+/* .custom-descriptions {
+  background-color: white;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 50;
+  text-align: center;
+  z-index: 9;
+  border-radius: 6px;
+  width: 70%;
+} */
+.descriptions-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.custom-descriptions {
+  background-color: white;
+  text-align: center;
+  border-radius: 6px;
+  width: 70%;
+}
+
+.custom-descriptions h3.ant-descriptions-title {
+  font-size: 2rem;
+}
+
+.custom-descriptions {
+  background-color: white;
+  text-align: center;
+  border-radius: 6px;
+  width: 70%;
+}
+
+.ant-descriptions-title {
+  font-size: 2.5rem !important;
 }
