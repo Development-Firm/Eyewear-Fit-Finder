@@ -23,6 +23,7 @@ function CameraComponent2() {
   const [ isModalSecondOpen, setIsModalSecondOpen ]=useState( false );
   const [ imagesFront, setImagesFront ]=useState( [] );
   const [ imagesRight, setImagesRight ]=useState( [] );
+  const [ result, setResult ]=useState( null )
 
   const contentStyle={
     margin: 0,
@@ -61,12 +62,13 @@ function CameraComponent2() {
     }
     console.log( "chlaa Front", formData )
     // Send FormData to Flask server API
-    const response=await fetch( "http://127.0.0.1:5000/measurement", {
+    const response=await fetch( "http://127.0.0.1:5000/measurement", { //change URL
       method: "POST",
       body: formData,
     } );
-    const result=await response.json();
-    console.log('RESULT:', result);
+    const r=await response.json();
+    console.log( 'RESULT:', r );
+    setResult( r );
   }
 
   const handleScan=async () => {
@@ -217,30 +219,16 @@ function CameraComponent2() {
   }, [ scanningFront, scanningRight ] );
   return (
     <div >
-      {/* <div style={{ color: 'white', textAlign: 'center', paddingBlock: '1rem' }}>
-        {scanningFront?
-          <>
-            <Spin indicator={<LoadingOutlined />} />
-            <p style={{ color: 'white' }}>Look into the camera while your face is being scanned</p>
-          </>
-          :scanningRight?
-            <>
-              <Spin indicator={<LoadingOutlined />} />
-              <p style={{ color: 'black' }}>Look right while your face is being scanned</p>
-            </>
-            :
-            <h1 style={{ color: 'black' }}>Eyewear Fit Finder</h1>
-        }
-      </div> */}
       {contextHolder}
       <center>
-        {isScanningComplete?
+        {isScanningComplete&&result?
           <div className="descriptions-wrapper">
             <Descriptions title="User Info" bordered className="custom-descriptions" column={1} layout="horizontal" style={{ fontSize: '1.5rem' }}>
-              <Descriptions.Item label="Product" style={{ fontSize: '1.5rem' }}>Cloud Database</Descriptions.Item>
-              <Descriptions.Item label="Billing Mode" style={{ fontSize: '1.5rem' }}>Prepaid</Descriptions.Item>
-              <Descriptions.Item label="Automatic Renewal" style={{ fontSize: '1.5rem' }}>YES</Descriptions.Item>
-              <Descriptions.Item label="Order time" style={{ fontSize: '1.5rem' }}>2018-04-24 18:00:00</Descriptions.Item>
+              <Descriptions.Item label="Nose Angle" style={{ fontSize: '1.5rem' }}>{Math.round( result.angle )}°</Descriptions.Item>
+              <Descriptions.Item label="Eye Length" style={{ fontSize: '1.5rem' }}>{Math.round( result.max_eye )} cm</Descriptions.Item>
+              <Descriptions.Item label="Face Width" style={{ fontSize: '1.5rem' }}>{Math.round( result.max_fw )} cm</Descriptions.Item>
+              <Descriptions.Item label="Nose Width" style={{ fontSize: '1.5rem' }}>{Math.round( result.max_nw )} cm</Descriptions.Item>
+              <Descriptions.Item label="Pupil Distance" style={{ fontSize: '1.5rem' }}>{Math.round( result.max_pd )} cm</Descriptions.Item>
             </Descriptions>
           </div>:<div>
           <Webcam
@@ -253,7 +241,7 @@ function CameraComponent2() {
               right: 0,
               top: 100,
               textAlign: "center",
-              zIndex: 9,
+              zIndex: -1,
               width: 1280,
               height: 720,
               opacity: 0
@@ -276,9 +264,10 @@ function CameraComponent2() {
           ></canvas>
           </div>}
       </center>
-      <div style={{
+      {!isScanningComplete&&<div style={{
         position: 'absolute',
-        bottom: '2rem',
+        // bottom: '2rem',
+        bottom: '2%',
         justifyContent: 'center',
         left: '50%',
         transform: 'translateX(-50%)'
@@ -288,14 +277,15 @@ function CameraComponent2() {
             background: 'white',
             width: '10rem',
             height: '2.5rem',
-            fontSize: '1rem'
+            fontSize: '1rem',
+            zIndex: 10000000
           }}
           onClick={showModal}
           disabled={scanningRight||scanningFront}
         >
           {scanningProcess? "Scanning.....":"Scan"}
         </Button>
-      </div>
+      </div>}
 
       <Modal width={1000} open={isModalOpen} onOk={handleScan} onCancel={handleCancel} okText={"Start scan"}>
         <Carousel

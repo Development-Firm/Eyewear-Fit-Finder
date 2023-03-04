@@ -58,7 +58,9 @@ def measurement():
             image_dist_6 = mp_drawing.math.dist((l[168].x*int(h),l[168].y*int(w)),(l[4].x*int(h),l[4].y*int(w)))
             image_dist_7 = mp_drawing.math.dist((l[102].x*int(h),l[102].y*int(w)),(l[4].x*int(h),l[4].y*int(w)))
             real_dist = 1.1
-            otpr = real_dist/image_dist
+            if image_dist >img_dist:
+                img_dist=image_dist
+            otpr = real_dist/img_dist
             i = otpr*image_dist_2
             if max_eye<i:
                 max_eye=i
