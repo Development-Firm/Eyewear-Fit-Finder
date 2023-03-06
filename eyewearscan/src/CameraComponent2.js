@@ -62,7 +62,7 @@ function CameraComponent2() {
     }
     console.log( "chlaa Front", formData )
     // Send FormData to Flask server API
-    const response=await fetch( "http://127.0.0.1:5000/measurement", { //change URL
+    const response=await fetch( "https://muhammadzohairbaig.pythonanywhere.com/measurement", { //change URL
       method: "POST",
       body: formData,
     } );
